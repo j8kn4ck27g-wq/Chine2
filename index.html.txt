@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Осенний Китай</title>
+<style>
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  text-align: center;
+  overflow-x: hidden;
+}
+#startScreen {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: url("https://images.unsplash.com/photo-1549692520-acc6669e2f0c") center/cover;
+}
+button {
+  padding: 18px 45px;
+  font-size: 22px;
+  border: none;
+  border-radius: 10px;
+  background: #ff7a18;
+  color: white;
+  cursor: pointer;
+}
+.cloud {
+  position: fixed;
+  font-size: 40px;
+  opacity: 0.7;
+  animation: cloudMove 60s linear infinite;
+}
+@keyframes cloudMove {
+  from { transform: translateX(-200px); }
+  to { transform: translateX(110vw); }
+}
+.lantern {
+  position: fixed;
+  top: 0;
+  font-size: 30px;
+  animation: lanternMove 6s ease-in-out infinite alternate;
+}
+@keyframes lanternMove {
+  from { transform: translateY(0); }
+  to { transform: translateY(30px); }
+}
+.leaf {
+  position: fixed;
+  top: -50px;
+  font-size: 24px;
+  animation: fall linear forwards;
+}
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}
+section {
+  padding: 60px 20px;
+  max-width: 1100px;
+  margin: auto;
+}
+.images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+.images img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+.slider img {
+  width: 100%;
+  border-radius: 12px;
+}
+.controls {
+  margin-top: 10px;
+}
+.controls button {
+  padding: 10px 20px;
+  margin: 5px;
+}
+.map img {
+  width: 80%;
+  max-width: 600px;
+  border-radius: 10px;
+}
+footer {
+  padding: 30px;
+  background: #020617;
+}
+</style>
+</head>
+<body>
+
+<!-- облака -->
+<div class="cloud" style="top:60px;">☁</div>
+<div class="cloud" style="top:120px; animation-duration:80s;">☁</div>
+<div class="cloud" style="top:200px; animation-duration:70s;">☁</div>
+
+<!-- фонарики -->
+<div class="lantern" style="left:10%;">🏮</div>
+<div class="lantern" style="left:80%;">🏮</div>
+
+<!-- экран входа -->
+<div id="startScreen">
+  <h1>Осенние места Китая 🍁</h1>
+  <button onclick="openSite()">Открыть</button>
+</div>
+
+<!-- музыка -->
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_5f6c7f2a36.mp3" type="audio/mpeg">
+</audio>
+
+<!-- основной сайт -->
+<div id="site" style="display:none">
+  <section>
+    <h1>Осенний Китай</h1>
+    <div class="images">
+      <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470">
+      <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee">
+      <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e">
+      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb">
+    </div>
+  </section>
+
+  <section class="slider">
+    <h2>Великая китайская стена</h2>
+    <img id="slide" src="https://images.unsplash.com/photo-1508804185872-d7badad00f7d">
+    <div class="controls">
+      <button onclick="prev()">◀</button>
+      <button onclick="next()">▶</button>
+    </div>
+  </section>
+
+  <section class="map">
+    <h2>Карта Китая</h2>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/32/China_blank_map.svg">
+    <p>Китай — одна из самых красивых стран мира с древней культурой и природой.</p>
+  </section>
+
+  <footer>
+    Осеннее путешествие по Китаю 🍁
+  </footer>
+</div>
+
+<script>
+function openSite() {
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("site").style.display = "block";
+  document.getElementById("music").play();
+  startLeaves();
+}
+
+function startLeaves() {
+  setInterval(() => {
+    let leaf = document.createElement("div");
+    leaf.classList.add("leaf");
+    leaf.innerHTML = "🍁";
+    leaf.style.left = Math.random() * 100 + "vw";
+    leaf.style.animationDuration = (3 + Math.random() * 5) + "s";
+    document.body.appendChild(leaf);
+    setTimeout(() => leaf.remove(), 8000);
+  }, 300);
+}
+
+let images = [
+  "https://images.unsplash.com/photo-1508804185872-d7badad00f7d",
+  "https://images.unsplash.com/photo-1549893074-4bc0f0da48f8",
+  "https://images.unsplash.com/photo-1599577180758-4a4b0c8dfc5d"
+];
+
+let index = 0;
+
+function show() {
+  document.getElementById("slide").src = images[index];
+}
+
+function next() {
+  index++;
+  if (index >= images.length) index = 0;
+  show();
+}
+
+function prev() {
+  index--;
+  if (index < 0) index = images.length - 1;
+  show();
+}
+</script>
+
+</body>
+</html>
